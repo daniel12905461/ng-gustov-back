@@ -32,9 +32,16 @@ class VacacionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVacacionRequest $request)
+    public function store(Request $request)
     {
         //
+        $obj = new Vacacion();
+        $obj->nombres = $request->input('nombres');
+        $obj->apellidos = $request->input('apellidos');
+        $obj->fecha_inicio = $request->input('fecha_inicio');
+        $obj->save();
+
+        return response()->json(['ok' => true, 'data' => $obj], 201);
     }
 
     /**

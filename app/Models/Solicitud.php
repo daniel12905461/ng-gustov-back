@@ -9,20 +9,25 @@ class Solicitud extends Model
 {
     use HasFactory;
 
-    public function planInternet()
+    public function vacacion()
     {
-        return $this->belongsTo('App\Models\PlanInternet', 'plan_internet_id', 'id');
+        return $this->belongsTo('App\Models\Vacacion', 'vacacion_id', 'id');
     }
 
-    public function zona()
+    public function dias()
     {
-        return $this->belongsTo('App\Models\Zona', 'zona_id', 'id');
+        return $this->hasMany('App\Models\Dia');
     }
 
-    public function scopeOfEstado($query, $type)
-    {
-      if ($type != "") {
-        return $query->where('estado', $type);
-      }
-    }
+    // public function zona()
+    // {
+    //     return $this->belongsTo('App\Models\Zona', 'zona_id', 'id');
+    // }
+
+    // public function scopeOfEstado($query, $type)
+    // {
+    //   if ($type != "") {
+    //     return $query->where('estado', $type);
+    //   }
+    // }
 }

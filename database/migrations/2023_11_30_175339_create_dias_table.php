@@ -16,8 +16,8 @@ return new class extends Migration
             $table->date('fecha');
             $table->string('nombre');
             
-            $table->unsignedBigInteger('vacacion_id')->nullable();
-            $table->foreign('vacacion_id')->references('id')->on('vacacions')->onDelete('cascade');
+            $table->unsignedBigInteger('solicitud_id')->nullable();
+            $table->foreign('solicitud_id')->references('id')->on('solicituds')->onDelete('cascade');
             $table->timestamps();
         });
     }

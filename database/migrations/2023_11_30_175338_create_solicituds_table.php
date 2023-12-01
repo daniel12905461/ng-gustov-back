@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('zonas', function (Blueprint $table) {
+        Schema::create('solicituds', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->integer('dias_restantes');
+            $table->integer('dias_vacaciones');
+            $table->boolean('activo');
+            
+            $table->unsignedBigInteger('vacacion_id')->nullable();
+            $table->foreign('vacacion_id')->references('id')->on('vacacions')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -23,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('zonas');
+        Schema::dropIfExists('solicituds');
     }
 };

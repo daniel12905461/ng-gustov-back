@@ -42,4 +42,7 @@ Route::get('empleados/vacaciones/{id}', [EmpleadoController::class, 'empleadoVac
 
 Route::apiResource('vacaciones', VacacionController::class);
 
+Route::apiResource('solicitudes', SolicitudController::class);
+Route::get('solicitudes/pdf/solicitud', [SolicitudController::class, 'pdfSolicitudHoja']);
+
 Route::apiResource('dia-laborales', DiaLaboralController::class);
