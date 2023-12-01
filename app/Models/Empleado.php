@@ -13,4 +13,14 @@ class Empleado extends Model
     {
         return $this->hasMany('App\Models\Vacacion');
     }
+
+    public function scopeNombreApellido($query, $term)
+    {
+        if ($term) {
+            $query->where('nombres', 'LIKE', '%' . $term . '%')->orWhere('apellidos', 'LIKE', '%' . $term . '%');
+            // $query->orWhere('apellidos', 'LIKE', '%' . $term . '%');
+        }
+
+        return $query;
+    }
 }

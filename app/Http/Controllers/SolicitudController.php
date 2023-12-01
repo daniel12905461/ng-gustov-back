@@ -74,9 +74,14 @@ class SolicitudController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Solicitud $solicitud)
+    public function show($id)
     {
         //
+        $solicitud = Solicitud::with('dias')->with(['vacacion' => function ($q) {
+            $q->with('empleado');
+        }])->findOrFail($id);
+
+        return response()->json(['ok' => true, 'data' => $solicitud], 201);
     }
 
     /**
@@ -90,9 +95,43 @@ class SolicitudController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSolicitudRequest $request, Solicitud $solicitud)
+    public function update($id, Request $request)
     {
         //
+        $anio = Anio::where('nombre', '2023')->first();
+
+        $vacacion = Vacacion::where('anio_id', $anio->id)->where('empleado_id', $request->input('empleado_id'))->first();
+        if ($vacacion) {
+            $solicitud = Solicitud::findOrFail($id);
+            // $solicitud->dias_restantes = 0;
+            $solicitud->dias_vacaciones = $request->input('dias_solicitados');
+            // $solicitud->activo = true;
+            // $solicitud->vacacion_id = $vacacion->id;
+            if ($solicitud->activo == false) {
+                return response()->json(['ok' => true, 'error' => 'Solicitud desactivada'], 409);
+            }
+            $solicitud->save();
+
+            $dias = $request->input('dias');
+            for ($i=0; $i < count($dias); $i++) { 
+                $dia = Dia::findOrFail($dias[$i]['id']);
+                $dia->delete();
+            }
+            for ($i=0; $i < count($dias); $i++) { 
+                $dia = new Dia();
+                $dia->fecha = $dias[$i]['fecha'];
+                $dia->nombre = $dias[$i]['nombre'];
+                $dia->solicitud_id = $solicitud->id;
+                $dia->save();
+            }
+
+            $vacacion->dias_restantes =  $vacacion->dias_restantes-(int)$request->input('dias_solicitados');
+            $vacacion->save();
+        }else{
+
+        }
+
+        return response()->json(['ok' => true, 'data' => $solicitud], 201);
     }
 
     /**
@@ -103,6 +142,25 @@ class SolicitudController extends Controller
         //
         $obj = Solicitud::findOrFail($id);
         $obj->delete();
+        
+        $vacacion = Vacacion::findOrFail($obj->vacacion_id);
+        $vacacion->dias_restantes =  $vacacion->dias_restantes+(int)$obj->dias_vacaciones;
+        $vacacion->save();
+
+        $dias = Dia::where('solicitud_id',$id)->get();
+        foreach ($dias as $key => $dia) {
+            $dia->delete();
+        }
+
+        return response()->json(['ok' => true, 'data' => $obj], 201);
+    }
+
+    public function activar($id)
+    {
+        //
+        $obj = Solicitud::findOrFail($id);
+        $obj->activo = false;
+        $obj->save();
 
         return response()->json(['ok' => true, 'data' => $obj], 201);
     }

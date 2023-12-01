@@ -34,7 +34,7 @@ Route::apiResource('usuarios', AuthController::class);
 Route::get('usuarios/roles/actives', 'Api\AuthController@roles');
 
 Route::apiResource('zonas', ZonaController::class);
-Route::apiResource('solicitudes', SolicitudController::class);
+// Route::apiResource('solicitudes', SolicitudController::class);
 Route::apiResource('planes', PlanInternetController::class);
 
 Route::apiResource('empleados', EmpleadoController::class);
@@ -43,6 +43,7 @@ Route::get('empleados/vacaciones/{id}', [EmpleadoController::class, 'empleadoVac
 Route::apiResource('vacaciones', VacacionController::class);
 
 Route::apiResource('solicitudes', SolicitudController::class);
+Route::get('solicitudes/habilitar/{id}', [SolicitudController::class, 'activar']);
 Route::get('solicitudes/pdf/solicitud', [SolicitudController::class, 'pdfSolicitudHoja']);
 
 Route::apiResource('dia-laborales', DiaLaboralController::class);

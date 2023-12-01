@@ -12,10 +12,10 @@ class EmpleadoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $objects = Empleado::paginate();
+        $objects = Empleado::nombreApellido($request->input('term'))->paginate();
         return response()->json(['ok' => true, 'data' => $objects], 200);
     }
 

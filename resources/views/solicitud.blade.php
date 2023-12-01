@@ -31,6 +31,7 @@
                 <b>Recibo de vacaciones</b> <br>
             </th>
             <th style="display: flex; justify-content: center;">
+                <img src="images/logo.png" alt="" style="width: 40px;;"/>
             </th>
         </tr>
     </table>
