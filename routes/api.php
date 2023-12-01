@@ -7,6 +7,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ZonaController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\PlanInternetController;
+use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\VacacionController;
+use App\Http\Controllers\DiaLaboralController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,8 +31,15 @@ Route::post('auth/logout', [AuthController::class, 'logout'])->name('api.auth.lo
 Route::get('auth/me', [AuthController::class, 'me'])->name('api.auth.me')->middleware('auth:api');
 
 Route::apiResource('usuarios', AuthController::class);
-Route::get('usuarios/roles/actives', 'Api\AuthController@roles')->middleware('auth:api');
+Route::get('usuarios/roles/actives', 'Api\AuthController@roles');
 
 Route::apiResource('zonas', ZonaController::class);
 Route::apiResource('solicitudes', SolicitudController::class);
 Route::apiResource('planes', PlanInternetController::class);
+
+Route::apiResource('empleados', EmpleadoController::class);
+Route::get('empleados/vacaciones/{id}', [EmpleadoController::class, 'empleadoVacaciones']);
+
+Route::apiResource('vacaciones', VacacionController::class);
+
+Route::apiResource('dia-laborales', DiaLaboralController::class);
