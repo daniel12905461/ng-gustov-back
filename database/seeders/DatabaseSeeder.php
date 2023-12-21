@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
         //     'fecha_inicio' => '1999-10-19',
         // ]);
 
-        $fechaFin = Carbon::parse('2023-12-01');
+        $fechaFin = Carbon::parse('2023-12-21');
         $faker = Faker::create('es_ES'); 
         for ($i=0; $i < 5; $i++) {
             $obj = new Empleado();
